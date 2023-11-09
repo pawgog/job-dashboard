@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { deviceMaxWidth } from '../global/devices';
-import { colors } from '../global/colors';
+import { deviceMaxWidth } from '../../global/devices';
+import { colors } from '../../global/colors';
 
 export const NavBar = styled.nav`
   position: fixed;
