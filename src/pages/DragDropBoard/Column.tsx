@@ -1,12 +1,15 @@
 import { ReactNode } from 'react';
 import { useDrop, DropTargetMonitor } from 'react-dnd';
+import { colors } from '../../global/colors';
+import * as S from './DragDropBoard.styled';
 
 type Props = {
   children: ReactNode;
   title: string;
+  bgColor: string;
 };
 
-const Column = ({ children, title }: Props) => {
+const Column = ({ children, title, bgColor }: Props) => {
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'BOX',
     drop: () => ({ name: title }),
@@ -19,9 +22,9 @@ const Column = ({ children, title }: Props) => {
   const getBackgroundColor = () => {
     if (isOver) {
       if (canDrop) {
-        return 'rgb(188,251,255)';
+        return `${colors.blue}`;
       } else if (!canDrop) {
-        return 'rgb(255,188,188)';
+        return `${colors.lightRed}`;
       }
     } else {
       return '';
@@ -29,10 +32,10 @@ const Column = ({ children, title }: Props) => {
   };
 
   return (
-    <div ref={drop} style={{ backgroundColor: getBackgroundColor() }}>
+    <S.Column ref={drop} $bgColor={bgColor} style={{ backgroundColor: getBackgroundColor() }}>
       <p>{title}</p>
       {children}
-    </div>
+    </S.Column>
   );
 };
 

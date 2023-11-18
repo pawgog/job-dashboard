@@ -1,22 +1,19 @@
 import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { COLUMN_NAMES } from '../../global/staticText';
+import { COLUMN_ARRAY, tasks } from '../../utils/data';
 import Column from './Column';
 import MoveItem from './MoveItem';
+import * as S from './DragDropBoard.styled';
 
-const { TO_APPLY, APPLIED, ONSITE } = COLUMN_NAMES;
-
-const tasks = [
-  { id: 1, name: 'Intel', column: TO_APPLY },
-  { id: 2, name: 'Zoom', column: TO_APPLY },
-  { id: 3, name: 'Spotify', column: APPLIED },
-  { id: 4, name: 'Meta', column: ONSITE },
-  { id: 5, name: 'Google', column: ONSITE }
-];
+type ItemsArray = {
+  id: number;
+  name: string;
+  column: string;
+};
 
 const Board = () => {
-  const [items, setItems] = useState(tasks);
+  const [items, setItems] = useState<ItemsArray[]>(tasks);
 
   const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
     const dragItem = items[dragIndex];
@@ -33,14 +30,14 @@ const Board = () => {
     }
   };
 
-  const returnItemsForColumn = (columnName: string) => {
+  const returnItemsForColumn = (columnId: string) => {
     return items
-      .filter((item) => item.column === columnName)
+      .filter((item) => item.column === columnId)
       .map((item, index) => (
         <MoveItem
           key={item.id}
           name={item.name}
-          currentColumnName={item.column}
+          currentColumnId={item.column}
           setItems={setItems}
           index={index}
           moveCardHandler={moveCardHandler}
@@ -48,18 +45,18 @@ const Board = () => {
       ));
   };
 
-  const { TO_APPLY, APPLIED, INTERVIEWING, ONSITE, OFFER } = COLUMN_NAMES;
-
   return (
-    <div>
+    <S.Board>
       <DndProvider backend={HTML5Backend}>
-        <Column title={TO_APPLY}>{returnItemsForColumn(TO_APPLY)}</Column>
-        <Column title={APPLIED}>{returnItemsForColumn(APPLIED)}</Column>
-        <Column title={INTERVIEWING}>{returnItemsForColumn(INTERVIEWING)}</Column>
-        <Column title={ONSITE}>{returnItemsForColumn(ONSITE)}</Column>
-        <Column title={OFFER}>{returnItemsForColumn(OFFER)}</Column>
+        {COLUMN_ARRAY.map(({ columnId, name, bgColor }) => {
+          return (
+            <Column key={columnId} title={name} bgColor={bgColor}>
+              {returnItemsForColumn(columnId)}
+            </Column>
+          );
+        })}
       </DndProvider>
-    </div>
+    </S.Board>
   );
 };
 

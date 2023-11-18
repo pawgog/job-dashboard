@@ -1,11 +1,12 @@
 import { useRef, Dispatch } from 'react';
 import { DragSourceMonitor, useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
-import { COLUMN_NAMES } from '../../global/staticText';
+import { COLUMN_ARRAY } from '../../utils/data';
+import * as S from './DragDropBoard.styled';
 
 type Props = {
   name: string;
   index: number;
-  currentColumnName: string;
+  currentColumnId: string;
   moveCardHandler: (dragIndex: number, hoverIndex: number) => void;
   setItems: Dispatch<React.SetStateAction<ItemsArray[]>>;
 };
@@ -13,7 +14,7 @@ type Props = {
 type ItemProps = {
   index: number;
   name: string;
-  currentColumnName: string;
+  currentColumnId: string;
 };
 
 type ItemsArray = {
@@ -22,13 +23,13 @@ type ItemsArray = {
   column: string;
 };
 
-const MoveItem = ({ name, index, currentColumnName, moveCardHandler, setItems }: Props) => {
-  const changeItemColumn = (currentItem: ItemProps, columnName: string) => {
+const MoveItem = ({ name, index, currentColumnId, moveCardHandler, setItems }: Props) => {
+  const changeItemColumn = (currentItem: ItemProps, columnId: string) => {
     setItems((prevState: ItemsArray[]) => {
       return prevState.map((item: ItemsArray) => {
         return {
           ...item,
-          column: item.name === currentItem.name ? columnName : item.column
+          column: item.name === currentItem.name ? columnId : item.column
         };
       });
     });
@@ -68,31 +69,16 @@ const MoveItem = ({ name, index, currentColumnName, moveCardHandler, setItems }:
 
   const [{ isDragging }, drag] = useDrag({
     type: 'BOX',
-    item: () => ({ index, name, currentColumnName }),
+    item: () => ({ index, name, currentColumnId }),
     end: (item: ItemProps, monitor: DragSourceMonitor) => {
       const dropResult = monitor.getDropResult() as { dropEffect: string; name: string };
 
       if (dropResult) {
-        const { TO_APPLY, APPLIED, INTERVIEWING, ONSITE, OFFER } = COLUMN_NAMES;
-        switch (dropResult.name) {
-          case TO_APPLY:
-            changeItemColumn(item, TO_APPLY);
-            break;
-          case APPLIED:
-            changeItemColumn(item, APPLIED);
-            break;
-          case INTERVIEWING:
-            changeItemColumn(item, INTERVIEWING);
-            break;
-          case ONSITE:
-            changeItemColumn(item, ONSITE);
-            break;
-          case OFFER:
-            changeItemColumn(item, OFFER);
-            break;
-          default:
-            break;
-        }
+        COLUMN_ARRAY.find(({ columnId, name }) => {
+          if (dropResult.name === name) {
+            changeItemColumn(item, columnId);
+          }
+        });
       }
     },
     collect: (monitor: DragSourceMonitor) => ({
@@ -105,9 +91,9 @@ const MoveItem = ({ name, index, currentColumnName, moveCardHandler, setItems }:
   drag(drop(ref));
 
   return (
-    <div ref={ref} style={{ opacity }}>
+    <S.Item ref={ref} style={{ opacity }}>
       {name}
-    </div>
+    </S.Item>
   );
 };
 
