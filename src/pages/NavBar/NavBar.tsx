@@ -1,3 +1,4 @@
+import { staticText } from '../../global/staticText';
 import * as S from './NavBar.styled';
 
 const NavBar = () => {
@@ -10,8 +11,8 @@ const NavBar = () => {
           &#9776;
         </label>
         <S.NavMenu>
-          <li>Home</li>
-          <li>Login</li>
+          <li>{staticText.home}</li>
+          <li>{staticText.login}</li>
         </S.NavMenu>
       </ul>
     </S.NavBar>
