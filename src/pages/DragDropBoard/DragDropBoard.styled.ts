@@ -31,3 +31,16 @@ export const Item = styled.div`
   background-color: #fafdff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
 `
+
+export const Button = styled.button`
+  display: flex;
+  align-items: center;
+
+  & input {
+    max-width: 100px;
+    margin-left: 0.5rem;
+  }
+  & svg {
+    font-size: 1.5rem;
+  }
+`;

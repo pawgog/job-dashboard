@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { useDrop, DropTargetMonitor } from 'react-dnd';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { colors } from '../../global/colors';
 import * as S from './DragDropBoard.styled';
 
@@ -35,6 +36,10 @@ const Column = ({ children, title, bgColor }: Props) => {
     <S.Column ref={drop} $bgColor={bgColor} style={{ backgroundColor: getBackgroundColor() }}>
       <p>{title}</p>
       {children}
+      <S.Button>
+        <AiOutlinePlusCircle />
+        <input />
+      </S.Button>
     </S.Column>
   );
 };
