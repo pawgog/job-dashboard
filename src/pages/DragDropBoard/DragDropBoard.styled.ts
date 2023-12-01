@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { colors } from '../../global/colors';
 
 export const Board = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ export const Item = styled.div`
   width: 160px;
   margin: 1rem auto;
   border-radius: 0.5rem;
-  background-color: #fafdff;
+  background-color: ${colors.itemBackground};
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
 `
 
@@ -40,7 +41,7 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
-  padding: 0.4rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 0.7rem;
   border: none;
 
@@ -48,7 +49,7 @@ export const Button = styled.button`
     max-width: 100px;
     margin-left: 0.5rem;
     border: none;
-    box-shadow: 0px 0 5px 1px #D3D3D3;
+    box-shadow: 0px 0 5px 1px ${colors.lightGrey};
   }
   & svg {
     font-size: 1.5rem;

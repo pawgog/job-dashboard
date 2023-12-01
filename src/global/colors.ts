@@ -8,5 +8,6 @@ export const colors = {
     whiteOpacity: 'rgba(255, 255, 255, 0.8)',
     grey: '#7f7d7d',
     lightGrey: '#a5a2a2',
-    background: '#f7f7f7'
+    background: '#f7f7f7',
+    itemBackground: '#fafdff'
   };
