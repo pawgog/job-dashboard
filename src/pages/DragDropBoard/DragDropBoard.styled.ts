@@ -20,6 +20,10 @@ export const Column = styled.div<{$bgColor: string}>`
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 `
 
+export const ColumTitle = styled.p`
+  font-weight: 700;
+`;
+
 export const Item = styled.div`
   display: flex;
   justify-content: center;
@@ -35,10 +39,16 @@ export const Item = styled.div`
 export const Button = styled.button`
   display: flex;
   align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem;
+  border-radius: 0.7rem;
+  border: none;
 
   & input {
     max-width: 100px;
     margin-left: 0.5rem;
+    border: none;
+    box-shadow: 0px 0 5px 1px #D3D3D3;
   }
   & svg {
     font-size: 1.5rem;

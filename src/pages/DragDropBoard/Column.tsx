@@ -34,7 +34,7 @@ const Column = ({ children, title, bgColor }: Props) => {
 
   return (
     <S.Column ref={drop} $bgColor={bgColor} style={{ backgroundColor: getBackgroundColor() }}>
-      <p>{title}</p>
+      <S.ColumTitle>{title}</S.ColumTitle>
       {children}
       <S.Button>
         <AiOutlinePlusCircle />
