@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { COLUMN_ARRAY, tasks } from '../../utils/data';
+import { useQuery } from '@tanstack/react-query';
+
+import { fetchTasks } from '../../services';
+import { COLUMN_ARRAY } from '../../utils/data';
 import Column from './Column';
 import MoveItem from './MoveItem';
 import * as S from './DragDropBoard.styled';
@@ -13,6 +16,13 @@ type ItemsArray = {
 };
 
 const Board = () => {
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ['tasks'],
+    queryFn: fetchTasks
+  });
+
+  const tasks = data || [];
+
   const [items, setItems] = useState<ItemsArray[]>(tasks);
 
   const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
@@ -44,6 +54,14 @@ const Board = () => {
         />
       ));
   };
+
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
 
   return (
     <S.Board>
