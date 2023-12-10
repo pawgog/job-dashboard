@@ -16,7 +16,7 @@ type ItemsArray = {
 };
 
 const Board = () => {
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, isError, data, error } = useQuery<ItemsArray[]>({
     queryKey: ['tasks'],
     queryFn: fetchTasks
   });
@@ -24,6 +24,14 @@ const Board = () => {
   const tasks = data || [];
 
   const [items, setItems] = useState<ItemsArray[]>(tasks);
+
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
 
   const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
     const dragItem = items[dragIndex];
@@ -41,7 +49,7 @@ const Board = () => {
   };
 
   const returnItemsForColumn = (columnId: string) => {
-    return items
+    return tasks
       .filter((item) => item.column === columnId)
       .map((item, index) => (
         <MoveItem
@@ -54,14 +62,6 @@ const Board = () => {
         />
       ));
   };
-
-  if (isPending) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
 
   return (
     <S.Board>
