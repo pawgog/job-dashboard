@@ -5,15 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 
 import { fetchTasks } from '../../services';
 import { COLUMN_ARRAY } from '../../utils/data';
+import { ItemsArray } from '../../utils/types';
 import Column from './Column';
 import MoveItem from './MoveItem';
 import * as S from './DragDropBoard.styled';
-
-type ItemsArray = {
-  id: number;
-  name: string;
-  column: string;
-};
 
 const Board = () => {
   const { isPending, isError, data, error } = useQuery<ItemsArray[]>({
@@ -68,7 +63,7 @@ const Board = () => {
       <DndProvider backend={HTML5Backend}>
         {COLUMN_ARRAY.map(({ columnId, name, bgColor }) => {
           return (
-            <Column key={columnId} title={name} bgColor={bgColor}>
+            <Column key={columnId} columnId={columnId} title={name} bgColor={bgColor}>
               {returnItemsForColumn(columnId)}
             </Column>
           );
