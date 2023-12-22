@@ -47,11 +47,12 @@ export const Button = styled.button`
 
   & input {
     max-width: 100px;
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     border: none;
     box-shadow: 0px 0 5px 1px ${colors.lightGrey};
   }
   & svg {
+    cursor: pointer;
     font-size: 1.5rem;
   }
 `;
