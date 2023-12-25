@@ -4,6 +4,7 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { createTask } from '../../services';
+import { ItemsArray } from '../../utils/types';
 import { colors } from '../../global/colors';
 import * as S from './DragDropBoard.styled';
 
@@ -21,11 +22,11 @@ const Column = ({ children, columnId, title, bgColor }: Props) => {
     onMutate: async (newTask) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const newTasks = { id: Math.random(), name: newTask, column: columnId };
-      queryClient.setQueryData(['tasks'], (items: any) => [...items, newTasks]);
+      queryClient.setQueryData(['tasks'], (items: ItemsArray[]) => [...items, newTasks]);
       return { newTasks };
     },
     onSuccess: () => {
-      queryClient.setQueryData(['tasks'], (items: any) => {
+      queryClient.setQueryData(['tasks'], (items: ItemsArray[]) => {
         return items;
       });
     }
