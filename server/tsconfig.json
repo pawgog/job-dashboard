@@ -9,6 +9,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "src/**/*"
-  ]
+    "src/**/*",
+    "src/index.ts",
+    "types",
+  ],
 }
