@@ -2,8 +2,8 @@ import axios from "axios";
 
 export async function fetchTasks() {
   try {
-    const tasks = await axios.get("http://localhost:3000/tasks");
-    return tasks.data;
+    const { data } = await axios.get("https://xv9gz13rca.execute-api.us-east-1.amazonaws.com/dev/tasks");
+    return data?.result;
   } catch (e) {
     console.log(e);
   }
@@ -11,7 +11,7 @@ export async function fetchTasks() {
 
 export async function createTask(task: string) {
   try {
-    await axios.post(`http://localhost:3000/tasks/`, { data: task });
+    await axios.post(`https://xv9gz13rca.execute-api.us-east-1.amazonaws.com/dev/tasks`, { data: task });
   } catch (e) {
     console.log(e);
   }
