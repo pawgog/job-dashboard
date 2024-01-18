@@ -32,7 +32,12 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    res.status(201).json({});
+    const tasks = req.body;
+    return res.status(200).json({
+      result: tasks.Items,
+      count: tasks.Count,
+      message: "success",
+  });
   } catch (error) {
     console.error('An error occurred:', error);
     res.status(500).json(error);
