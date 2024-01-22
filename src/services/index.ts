@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ItemsArray } from "../utils/types";
 
 export async function fetchTasks() {
   try {
@@ -9,9 +10,9 @@ export async function fetchTasks() {
   }
 }
 
-export async function createTask(task: string) {
+export async function createUpdateTask(tasks: ItemsArray[]) {
   try {
-    await axios.post(`https://xv9gz13rca.execute-api.us-east-1.amazonaws.com/dev/tasks`, { data: task });
+    await axios.post(`https://xv9gz13rca.execute-api.us-east-1.amazonaws.com/dev/tasks`, { data: tasks });
   } catch (e) {
     console.log(e);
   }
