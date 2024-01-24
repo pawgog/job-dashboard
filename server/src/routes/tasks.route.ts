@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { getTasks } from '../services/tasks.service';
+import { getTasks, addOrUpdateTasks } from '../services/tasks.service';
 
 const router = Router();
 
@@ -32,12 +32,14 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const tasks = req.body;
-    return res.status(200).json({
-      result: tasks.Items,
-      count: tasks.Count,
+    const { data } = req.body;
+    const newData = {
+      result: data,
+      count: data.length,
       message: "success",
-  });
+    }
+    const result = await Promise.all([addOrUpdateTasks(newData)]);
+    return res.status(200).json(result);
   } catch (error) {
     console.error('An error occurred:', error);
     res.status(500).json(error);
