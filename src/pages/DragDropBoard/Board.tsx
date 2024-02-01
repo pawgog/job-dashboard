@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useQuery } from '@tanstack/react-query';
@@ -18,8 +17,6 @@ const Board = () => {
 
   const tasks = data || [];
 
-  const [items, setItems] = useState<ItemsArray[]>(tasks);
-
   if (isPending) {
     return <span>Loading...</span>;
   }
@@ -28,33 +25,11 @@ const Board = () => {
     return <span>Error: {error.message}</span>;
   }
 
-  const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
-    const dragItem = items[dragIndex];
-
-    if (dragItem) {
-      setItems((prevState) => {
-        const coppiedStateArray = [...prevState];
-        const prevItem = coppiedStateArray.splice(hoverIndex, 1, dragItem);
-
-        coppiedStateArray.splice(dragIndex, 1, prevItem[0]);
-
-        return coppiedStateArray;
-      });
-    }
-  };
-
   const returnItemsForColumn = (columnId: string) => {
     return tasks
       .filter((item) => item.column === columnId)
       .map((item, index) => (
-        <MoveItem
-          key={item.id}
-          name={item.name}
-          currentColumnId={item.column}
-          setItems={setItems}
-          index={index}
-          moveCardHandler={moveCardHandler}
-        />
+        <MoveItem key={item.id} name={item.name} currentColumnId={item.column} index={index} data={tasks} />
       ));
   };
 
