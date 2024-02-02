@@ -1,5 +1,7 @@
-import { useRef, Dispatch } from 'react';
+import { useRef } from 'react';
 import { DragSourceMonitor, useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateTasks } from '../../services';
 import { COLUMN_ARRAY } from '../../utils/data';
 import * as S from './DragDropBoard.styled';
 
@@ -7,8 +9,7 @@ type Props = {
   name: string;
   index: number;
   currentColumnId: string;
-  moveCardHandler: (dragIndex: number, hoverIndex: number) => void;
-  setItems: Dispatch<React.SetStateAction<ItemsArray[]>>;
+  data: ItemsArray[];
 };
 
 type ItemProps = {
@@ -23,16 +24,26 @@ type ItemsArray = {
   column: string;
 };
 
-const MoveItem = ({ name, index, currentColumnId, moveCardHandler, setItems }: Props) => {
+const MoveItem = ({ name, index, currentColumnId, data }: Props) => {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: updateTasks,
+    onMutate: (data: ItemsArray[]) => {
+      queryClient.setQueryData(['tasks'], data);
+    },
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    }
+  });
+
   const changeItemColumn = (currentItem: ItemProps, columnId: string) => {
-    setItems((prevState: ItemsArray[]) => {
-      return prevState.map((item: ItemsArray) => {
-        return {
-          ...item,
-          column: item.name === currentItem.name ? columnId : item.column
-        };
-      });
+    const newItemsArray = data.map((item: ItemsArray) => {
+      return {
+        ...item,
+        column: item.name === currentItem.name ? columnId : item.column
+      };
     });
+    mutate(newItemsArray);
   };
 
   const ref = useRef<HTMLDivElement>(null);
@@ -62,7 +73,6 @@ const MoveItem = ({ name, index, currentColumnId, moveCardHandler, setItems }: P
         return;
       }
 
-      moveCardHandler(dragIndex, hoverIndex);
       item.index = hoverIndex;
     }
   });
