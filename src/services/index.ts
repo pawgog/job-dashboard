@@ -10,7 +10,15 @@ export async function fetchTasks() {
   }
 }
 
-export async function createUpdateTask(tasks: ItemsArray[]) {
+export async function createTask(task: string) {
+  try {
+    await axios.post(`https://xv9gz13rca.execute-api.us-east-1.amazonaws.com/dev/tasks`, { data: task });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function updateTasks(tasks: ItemsArray[]) {
   try {
     await axios.post(`https://xv9gz13rca.execute-api.us-east-1.amazonaws.com/dev/tasks`, { data: tasks });
   } catch (e) {
