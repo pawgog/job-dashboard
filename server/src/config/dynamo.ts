@@ -1,4 +1,6 @@
 import AWS from 'aws-sdk';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { config } from './config';
 
 AWS.config.update({
@@ -7,8 +9,8 @@ AWS.config.update({
     secretAccessKey: config.aws_remote_config.secretAccessKey
 });
 
-
 const TABLE_NAME = config.TABLE_NAME;
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const client = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(client);
 
-export { dynamodb, TABLE_NAME }
+export { docClient, TABLE_NAME }
