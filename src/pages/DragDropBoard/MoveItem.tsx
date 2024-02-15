@@ -1,11 +1,12 @@
 import { useRef } from 'react';
 import { DragSourceMonitor, useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateTasks } from '../../services';
+import { fetchTaskById, updateTask } from '../../services';
 import { COLUMN_ARRAY } from '../../utils/data';
 import * as S from './DragDropBoard.styled';
 
 type Props = {
+  id: number;
   name: string;
   index: number;
   currentColumnId: string;
@@ -24,26 +25,38 @@ type ItemsArray = {
   column: string;
 };
 
-const MoveItem = ({ name, index, currentColumnId, data }: Props) => {
+const MoveItem = ({ id, name, index, currentColumnId, data }: Props) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: updateTasks,
-    onMutate: (data: ItemsArray[]) => {
-      queryClient.setQueryData(['tasks'], data);
+    mutationFn: updateTask,
+    onMutate: async (newItems: ItemsArray[]) => {
+      const [item] = newItems;
+
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
+      const previousTasks = queryClient.getQueryData(['tasks']);
+      queryClient.setQueryData(['tasks'], (previousState: ItemsArray[]) =>
+        previousState?.map((itemArray: ItemsArray) => (itemArray.id === item.id ? { ...item } : { ...itemArray }))
+      );
+
+      return { previousTasks };
     },
-    onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
     }
   });
 
   const changeItemColumn = (currentItem: ItemProps, columnId: string) => {
-    const newItemsArray = data.map((item: ItemsArray) => {
-      return {
-        ...item,
-        column: item.name === currentItem.name ? columnId : item.column
-      };
-    });
-    mutate(newItemsArray);
+    console.log(currentItem, columnId);
+
+    const newItems = data
+      .filter((item) => item.name === currentItem.name)
+      .map((item: ItemsArray) => {
+        return {
+          ...item,
+          column: columnId
+        };
+      });
+    mutate(newItems);
   };
 
   const ref = useRef<HTMLDivElement>(null);
@@ -103,6 +116,7 @@ const MoveItem = ({ name, index, currentColumnId, data }: Props) => {
   return (
     <S.Item ref={ref} style={{ opacity }}>
       {name}
+      <button onClick={() => fetchTaskById(id)}>edit</button>
     </S.Item>
   );
 };
