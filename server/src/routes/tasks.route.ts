@@ -1,6 +1,6 @@
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { Request, Response, Router } from 'express';
-import { getTasks, getTaskById, updateTask } from '../services/tasks.service';
+import { getTasks, getTaskById, updateTask, createTask, deleteTask } from '../services/tasks.service';
 
 const router = Router();
 
@@ -42,6 +42,17 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
   try {
     const { data } = req.body;
+    const result = await Promise.all([createTask(data)]);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error('An error occurred:', error);
+    res.status(500).json(error);
+  }
+});
+
+router.put('/', async (req: Request, res: Response) => {
+  try {
+    const { data } = req.body;
     const result = await Promise.all([updateTask(data)]);
     return res.status(200).json(result);
   } catch (error) {
@@ -50,18 +61,13 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
-  try {
-    res.status(200).json({});
-  } catch (error) {
-    console.error('An error occurred:', error);
-    res.status(500).json(error);
-  }
-});
-
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    res.status(200).json({});
+    const { id } = req.params;
+    await deleteTask(id);
+    return res.status(200).json({
+      message: "success",
+  });
   } catch (error) {
     console.error('An error occurred:', error);
     res.status(500).json(error);

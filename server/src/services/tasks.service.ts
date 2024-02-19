@@ -1,9 +1,9 @@
-import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { DeleteCommand, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { docClient, TABLE_NAME } from "../config/dynamo"
 
 type Items = {
-  id: number;
+  id: string;
   name: string;
   column: string;
 };
@@ -39,6 +39,20 @@ const getTaskById = async (id: string) => {
   }
 }
 
+const createTask = async (task: Items) => {
+  try {
+    const params = new PutCommand({
+      TableName: TABLE_NAME,
+      Item: task
+    });
+
+    const response = await docClient.send(params);
+    return response;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+}
+
 const updateTask = async (item: Items) => {
   const { id, name, column } = item;
   try {
@@ -58,4 +72,20 @@ const updateTask = async (item: Items) => {
   }
 }
 
-export { getTasks, getTaskById, updateTask }
+const deleteTask = async (id: string) => {
+  try {
+    const params = new DeleteCommand({
+      TableName: TABLE_NAME,
+      Key: {
+          id: id,
+      }
+    });
+
+    const response = await docClient.send(params);
+    return response;
+  } catch (err: any) {
+      throw new Error(err.message);
+  }
+}
+
+export { getTasks, getTaskById, createTask, updateTask, deleteTask }
