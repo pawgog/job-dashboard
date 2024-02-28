@@ -29,7 +29,14 @@ const Board = () => {
     return tasks
       .filter((item) => item.column === columnId)
       .map((item, index) => (
-        <MoveItem key={item.id} name={item.name} currentColumnId={item.column} index={index} data={tasks} />
+        <MoveItem
+          key={item.id}
+          id={item.id}
+          name={item.name}
+          currentColumnId={item.column}
+          index={index}
+          data={tasks}
+        />
       ));
   };
 
