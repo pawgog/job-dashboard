@@ -3,6 +3,9 @@ export const staticText = {
     login: "Login",
     dashboardTitle: "Job planner",
     dashboardSubTitle: "Application Process",
+    taskName: "Task name",
+    updateTask: "Update task name",
+    deleteConfirm: "Would you like to delete this item?",
 }
 
 export const COLUMN_NAMES = {

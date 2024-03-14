@@ -8,7 +8,7 @@ type Props = {
   changedValue: string;
 }
 
-export const changeItem = ({data, prop, value, comparedValue, changedValue}: Props) => {
+export const changeItemAction = ({data, prop, value, comparedValue, changedValue}: Props) => {
   const newItems = data
     .filter((item: ItemsArray) => item[prop as keyof typeof item] === comparedValue)
     .map((item: ItemsArray) => {
