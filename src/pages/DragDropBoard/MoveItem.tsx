@@ -1,13 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { MdEditSquare, MdOutlineDeleteForever } from 'react-icons/md';
 
 import Modal from '../../component/Modal';
 import useDragDrop from '../../hooks/useDragDrop';
 import useUpdateTask from '../../hooks/useUpdateTask';
-import { changeItem } from '../../utils/helper';
-import { ItemsArray } from '../../utils/types';
-import * as S from './DragDropBoard.styled';
 import useDeleteTask from '../../hooks/useDeleteTask';
+import { changeItemAction } from '../../utils/helper';
+import { ItemsArray } from '../../utils/types';
+import { staticText } from '../../global/staticText';
+import * as S from './DragDropBoard.styled';
 
 type Props = {
   id: string;
@@ -30,21 +31,23 @@ const MoveItem = ({ id, name, index, currentColumnId, data }: Props) => {
   const changeItemColumn = (comparedValue: string, changedValue: string) => {
     const prop = 'name';
     const value = 'column';
-    const { newItems } = changeItem({ data, prop, value, comparedValue, changedValue });
+    const { newItems } = changeItemAction({ data, prop, value, comparedValue, changedValue });
     mutateUpdate(newItems);
   };
 
   const changeItemText = (comparedValue: number, changedValue: string) => {
     const prop = 'id';
     const value = 'name';
-    const { newItems } = changeItem({ data, prop, value, comparedValue, changedValue });
+    const { newItems } = changeItemAction({ data, prop, value, comparedValue, changedValue });
     mutateUpdate(newItems);
   };
 
   const { ref, opacity } = useDragDrop({ index, currentColumnId, name, changeItemColumn });
 
   const deleteTask = (id: string) => {
-    mutateDelete(id);
+    if (confirm(`${staticText.deleteConfirm}`)) {
+      mutateDelete(id);
+    }
   };
 
   return (
@@ -53,8 +56,8 @@ const MoveItem = ({ id, name, index, currentColumnId, data }: Props) => {
       {isOpen && (
         <Modal
           id={id}
-          title={'Update task name'}
-          label={'Task name'}
+          title={`${staticText.updateTask}`}
+          label={`${staticText.taskName}`}
           text={text}
           changeItemText={changeItemText}
           setText={setText}

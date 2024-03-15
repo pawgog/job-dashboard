@@ -3,9 +3,9 @@ import { useDrop, DropTargetMonitor } from 'react-dnd';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { v4 as uuidv4 } from 'uuid';
 
+import useCreateTask from '../../hooks/useCreateTask';
 import { colors } from '../../global/colors';
 import * as S from './DragDropBoard.styled';
-import useCreateTask from '../../hooks/useCreateTask';
 
 type Props = {
   children: ReactNode;
