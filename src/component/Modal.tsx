@@ -6,13 +6,14 @@ type Prop = {
   id: string;
   title: string;
   label: string;
+  buttonTitle: string;
   text: string;
-  changeItemText: Function;
-  handleDisplayModal: Function;
+  changeItemText: (comparedValue: string, changedValue: string) => void;
+  handleDisplayModal: () => void;
   setText: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Modal = ({ id, title, label, text, changeItemText, handleDisplayModal, setText }: Prop) => {
+const Modal = ({ id, title, label, buttonTitle, text, changeItemText, handleDisplayModal, setText }: Prop) => {
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
   };
@@ -34,7 +35,7 @@ const Modal = ({ id, title, label, text, changeItemText, handleDisplayModal, set
           <form onSubmit={onSubmit}>
             <label>{label}</label>
             <input value={text} onChange={handleInput} />
-            <button type="submit">Submit</button>
+            <button type="submit">{buttonTitle}</button>
           </form>
         </S.ModalBodyContainer>
       </S.ModalContentContainer>

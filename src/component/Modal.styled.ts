@@ -51,9 +51,9 @@ export const ModalBodyContainer = styled.div`
   }
 `;
 
-export const ModalTitle = styled.h2`
+export const ModalTitle = styled.h3`
   padding: 1rem;
   margin: 0 auto;
-  font-weight: bold;
+  font-weight: 600;
   align-self: flex-start;
 `;
