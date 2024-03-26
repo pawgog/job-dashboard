@@ -25,7 +25,7 @@ const Board = () => {
     return <span>Error: {error.message}</span>;
   }
 
-  const returnItemsForColumn = (columnId: string) => {
+  const returnItemsForColumn = (columnId: string, name: string) => {
     return tasks
       .filter((item) => item.column === columnId)
       .map((item, index) => (
@@ -34,6 +34,7 @@ const Board = () => {
           id={item.id}
           name={item.name}
           currentColumnId={item.column}
+          currentColumnName={name}
           index={index}
           data={tasks}
         />
@@ -46,7 +47,7 @@ const Board = () => {
         {COLUMN_ARRAY.map(({ columnId, name, bgColor }) => {
           return (
             <Column key={columnId} columnId={columnId} title={name} bgColor={bgColor}>
-              {returnItemsForColumn(columnId)}
+              {returnItemsForColumn(columnId, name)}
             </Column>
           );
         })}
