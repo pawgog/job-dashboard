@@ -15,10 +15,11 @@ type Props = {
   name: string;
   index: number;
   currentColumnId: string;
+  currentColumnName: string;
   data: ItemsArray[];
 };
 
-const MoveItem = ({ id, name, index, currentColumnId, data }: Props) => {
+const MoveItem = ({ id, name, index, currentColumnId, currentColumnName, data }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [text, setText] = useState<string>(name);
   const { mutate: mutateUpdate } = useUpdateTask();
@@ -35,7 +36,7 @@ const MoveItem = ({ id, name, index, currentColumnId, data }: Props) => {
     mutateUpdate(newItems);
   };
 
-  const changeItemText = (comparedValue: number, changedValue: string) => {
+  const changeItemText = (comparedValue: string, changedValue: string) => {
     const prop = 'id';
     const value = 'name';
     const { newItems } = changeItemAction({ data, prop, value, comparedValue, changedValue });
@@ -56,8 +57,9 @@ const MoveItem = ({ id, name, index, currentColumnId, data }: Props) => {
       {isOpen && (
         <Modal
           id={id}
-          title={`${staticText.updateTask}`}
+          title={`${staticText.updateTask} ${currentColumnName.toLowerCase()}`}
           label={`${staticText.taskName}`}
+          buttonTitle={staticText.buttonTitle}
           text={text}
           changeItemText={changeItemText}
           setText={setText}
