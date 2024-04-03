@@ -33,8 +33,12 @@ const Modal = ({ id, title, label, buttonTitle, text, changeItemText, handleDisp
         <S.ModalTitle>{title}</S.ModalTitle>
         <S.ModalBodyContainer>
           <form onSubmit={onSubmit}>
-            <label>{label}</label>
-            <input value={text} onChange={handleInput} />
+            <div className="form-input">
+              <input value={text} onChange={handleInput} required />
+              <label>
+                <span>{label}</span>
+              </label>
+            </div>
             <button type="submit">{buttonTitle}</button>
           </form>
         </S.ModalBodyContainer>
