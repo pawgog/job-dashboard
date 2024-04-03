@@ -3,9 +3,9 @@ export const staticText = {
     login: "Login",
     dashboardTitle: "Job planner",
     dashboardSubTitle: "Application Process",
-    taskName: "Name",
+    taskName: "Task title",
     buttonTitle: "Update task",
-    updateTask: "Update task name from ",
+    updateTask: "Update task title from ",
     deleteConfirm: "Would you like to delete this item?",
 }
 
