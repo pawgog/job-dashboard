@@ -103,8 +103,29 @@ export const ModalBodyContainer = styled.div`
         transition: all 0.3s ease;
       }      
     }
-
+    button {
+      outline: 0;
+      border: 0;
+      will-change: box-shadow,transform;
+      background: ${colors.background};
+      box-shadow: 0px 2px 4px rgb(45 35 66 / 40%), 0px 7px 13px -3px rgb(45 35 66 / 30%), inset 0px -3px 0px #d6d6e7;
+      margin-top: 1rem;
+      height: 28px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: box-shadow 0.15s ease,transform 0.15s ease;
+      &:hover {
+          box-shadow: 0px 4px 8px rgb(45 35 66 / 40%), 0px 7px 13px -3px rgb(45 35 66 / 30%), inset 0px -3px 0px #d6d6e7;
+          transform: translateY(-2px);
+      }
+      &:active{
+          box-shadow: inset 0px 3px 7px ${colors.background};
+          transform: translateY(2px);
+      }          
     }
+  }
 `;
 
 export const ModalTitle = styled.h3`
