@@ -27,7 +27,6 @@ export const ColumTitle = styled.p`
 
 export const ColumnBody = styled.div`
   display: flex;
-  align-items: center;
   margin-bottom: 0.5rem;
 
   & input {
@@ -37,7 +36,6 @@ export const ColumnBody = styled.div`
     font-weight: 500;
     font-family: inherit;
     max-width: 100px;
-    margin-left: 1rem;
     border: 2px solid ${colors.lightGrey};
     border-radius: .5rem;
     transition: border .3s ease;
@@ -47,6 +45,12 @@ export const ColumnBody = styled.div`
         border-color: ${colors.violet};
     }
   }
+`;
+
+export const ColumnBodyInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
 `;
 
 export const Item = styled.div`
@@ -70,7 +74,7 @@ export const Item = styled.div`
 
 export const Button = styled.button`
   display: flex;
-  align-items: center;
+  margin-top: 0.4rem;
   border-radius: 0.7rem;
   border: none;
   background: none;

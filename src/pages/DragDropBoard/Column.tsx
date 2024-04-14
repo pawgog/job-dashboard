@@ -3,7 +3,9 @@ import { useDrop, DropTargetMonitor } from 'react-dnd';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { v4 as uuidv4 } from 'uuid';
 
+import ErrorMessage from '../../component/Error';
 import useCreateTask from '../../hooks/useCreateTask';
+import { staticText } from '../../global/staticText';
 import { colors } from '../../global/colors';
 import * as S from './DragDropBoard.styled';
 
@@ -16,12 +18,20 @@ type Props = {
 
 const Column = ({ children, columnId, title, bgColor }: Props) => {
   const [task, setTask] = useState<string>('');
+  const [inputError, setInputError] = useState<string>('');
   const { mutate } = useCreateTask();
 
   const addNewTask = (taskName: string) => {
-    const newTask = { id: uuidv4(), name: taskName, column: columnId };
-    mutate(newTask);
-    setTask('');
+    if (!taskName) {
+      setInputError(staticText.inputError);
+      setTimeout(() => {
+        setInputError('');
+      }, 5000);
+    } else {
+      const newTask = { id: uuidv4(), name: taskName, column: columnId };
+      mutate(newTask);
+      setTask('');
+    }
   };
 
   const [{ isOver, canDrop }, drop] = useDrop({
@@ -50,7 +60,10 @@ const Column = ({ children, columnId, title, bgColor }: Props) => {
       <S.ColumTitle>{title}</S.ColumTitle>
       {children}
       <S.ColumnBody>
-        <input type="text" value={task} placeholder="Add new task" onChange={(e) => setTask(e.target.value)} />
+        <S.ColumnBodyInput>
+          <input type="text" value={task} placeholder="Add new task" onChange={(e) => setTask(e.target.value)} />
+          <ErrorMessage text={inputError} />
+        </S.ColumnBodyInput>
         <S.Button>
           <AiOutlinePlusCircle onClick={() => addNewTask(task)} />
         </S.Button>
