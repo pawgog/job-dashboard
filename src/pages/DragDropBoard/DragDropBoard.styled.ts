@@ -8,6 +8,7 @@ export const Board = styled.div`
 `
 
 export const Column = styled.div<{$bgColor: string}>`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,10 +101,10 @@ const ButtomActionStyled = css`
   border-radius: 1rem;
   background: none;
   border: 1px solid transparent;
-  transition: opacity 0.3s ease-out;
+  transition: all 0.3s ease-out;
 
   &:hover {
-    border: 1px solid black;
+    background-color: ${colors.lightGrey};
   }
 
   & svg {

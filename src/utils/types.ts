@@ -9,3 +9,9 @@ export type ItemsArray = {
   name: string;
   column: string;
 };
+
+export type ColumnArray = {
+  _id: string;
+  name: string;
+  bgColor: string;
+};
