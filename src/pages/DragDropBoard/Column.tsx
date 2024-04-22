@@ -3,6 +3,8 @@ import { useDrop, DropTargetMonitor } from 'react-dnd';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { v4 as uuidv4 } from 'uuid';
 
+import Modal from '../../component/Modal';
+import ButtonAction from '../../component/PopoverMenu';
 import ErrorMessage from '../../component/Error';
 import useCreateTask from '../../hooks/useCreateTask';
 import { staticText } from '../../global/staticText';
@@ -17,6 +19,8 @@ type Props = {
 };
 
 const Column = ({ children, columnId, title, bgColor }: Props) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [text, setText] = useState<string>(title);
   const [task, setTask] = useState<string>('');
   const [inputError, setInputError] = useState<string>('');
   const { mutate } = useCreateTask();
@@ -55,6 +59,18 @@ const Column = ({ children, columnId, title, bgColor }: Props) => {
     }
   };
 
+  const handleDisplayModal = () => {
+    setIsOpen((prev) => (prev = !prev));
+  };
+
+  const changeColumnText = (comparedValue: string, changedValue: string) => {
+    console.log('changeColumnText', comparedValue, changedValue);
+  };
+
+  const deleteColumn = (id: string) => {
+    console.log('delete column', id);
+  };
+
   return (
     <S.Column ref={drop} $bgColor={bgColor} style={{ backgroundColor: getBackgroundColor() }}>
       <S.ColumTitle>{title}</S.ColumTitle>
@@ -68,6 +84,19 @@ const Column = ({ children, columnId, title, bgColor }: Props) => {
           <AiOutlinePlusCircle onClick={() => addNewTask(task)} />
         </S.Button>
       </S.ColumnBody>
+      {isOpen && (
+        <Modal
+          id={columnId}
+          title={`${staticText.updateColumn}`}
+          label={`${staticText.columnName}`}
+          buttonTitle={staticText.buttonTitle}
+          text={title}
+          changeItemText={() => changeColumnText(columnId, title)}
+          setText={setText}
+          handleDisplayModal={handleDisplayModal}
+        />
+      )}
+      <ButtonAction id={columnId} text={text} deleteFnc={deleteColumn} editFnc={handleDisplayModal} />
     </S.Column>
   );
 };
