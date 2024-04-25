@@ -2,9 +2,8 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchTasks } from '../../services';
-import { COLUMN_ARRAY } from '../../utils/data';
-import { ItemsArray } from '../../utils/types';
+import { fetchColumn, fetchTasks } from '../../services';
+import { ColumnArray, ItemsArray } from '../../utils/types';
 import Column from './Column';
 import MoveItem from './MoveItem';
 import * as S from './DragDropBoard.styled';
@@ -15,7 +14,13 @@ const Board = () => {
     queryFn: fetchTasks
   });
 
+  const { data: dataColumn } = useQuery<ColumnArray[]>({
+    queryKey: ['column'],
+    queryFn: fetchColumn
+  });
+
   const tasks = data || [];
+  const columnArray = dataColumn || [];
 
   if (isPending) {
     return <span>Loading...</span>;
@@ -44,10 +49,10 @@ const Board = () => {
   return (
     <S.Board>
       <DndProvider backend={HTML5Backend}>
-        {COLUMN_ARRAY.map(({ columnId, name, bgColor }) => {
+        {columnArray.map(({ _id, name, bgColor }) => {
           return (
-            <Column key={columnId} columnId={columnId} title={name} bgColor={bgColor}>
-              {returnItemsForColumn(columnId, name)}
+            <Column key={_id} columnId={_id} title={name} bgColor={bgColor}>
+              {returnItemsForColumn(_id, name)}
             </Column>
           );
         })}
