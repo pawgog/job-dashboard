@@ -6,7 +6,7 @@ import useDragDrop from '../../hooks/useDragDrop';
 import useUpdateTask from '../../hooks/useUpdateTask';
 import useDeleteTask from '../../hooks/useDeleteTask';
 import { changeItemAction } from '../../utils/helper';
-import { ItemsArray } from '../../utils/types';
+import { ColumnArray, ItemsArray } from '../../utils/types';
 import { staticText } from '../../global/staticText';
 import * as S from './DragDropBoard.styled';
 
@@ -16,10 +16,11 @@ type Props = {
   index: number;
   currentColumnId: string;
   currentColumnName: string;
+  columnArray: ColumnArray[];
   data: ItemsArray[];
 };
 
-const MoveItem = ({ id, name, index, currentColumnId, currentColumnName, data }: Props) => {
+const MoveItem = ({ id, name, index, currentColumnId, currentColumnName, columnArray, data }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [text, setText] = useState<string>(name);
   const { mutate: mutateUpdate } = useUpdateTask();
@@ -43,7 +44,7 @@ const MoveItem = ({ id, name, index, currentColumnId, currentColumnName, data }:
     mutateUpdate(newItems);
   };
 
-  const { ref, opacity } = useDragDrop({ index, currentColumnId, name, changeItemColumn });
+  const { ref, opacity } = useDragDrop({ index, currentColumnId, name, columnArray, changeItemColumn });
 
   const deleteTask = (id: string) => {
     if (confirm(`${staticText.deleteConfirm}`)) {

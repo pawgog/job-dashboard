@@ -1,17 +1,17 @@
 import { useRef } from 'react';
 import { useDrag, useDrop, DragSourceMonitor, DropTargetMonitor } from 'react-dnd';
 
-import { COLUMN_ARRAY } from '../utils/data';
-import { ItemProps } from '../utils/types';
+import { ColumnArray, ItemProps } from '../utils/types';
 
 type Props = {
   index: number;
   currentColumnId: string;
   name: string;
+  columnArray: ColumnArray[];
   changeItemColumn: Function;
 };
 
-const useDragDrop = ({ index, currentColumnId, name, changeItemColumn }: Props) => {
+const useDragDrop = ({ index, currentColumnId, name, columnArray, changeItemColumn }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [, drop] = useDrop<ItemProps>({
@@ -50,9 +50,9 @@ const useDragDrop = ({ index, currentColumnId, name, changeItemColumn }: Props) 
       const dropResult = monitor.getDropResult() as { dropEffect: string; name: string };
 
       if (dropResult) {
-        COLUMN_ARRAY.find(({ columnId, name }) => {
+        columnArray.find(({ _id, name }) => {
           if (dropResult.name === name) {
-            changeItemColumn(item.name, columnId);
+            changeItemColumn(item.name, _id);
           }
         });
       }
