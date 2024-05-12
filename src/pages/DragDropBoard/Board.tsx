@@ -9,12 +9,17 @@ import MoveItem from './MoveItem';
 import * as S from './DragDropBoard.styled';
 
 const Board = () => {
-  const { isPending, isError, data, error } = useQuery<ItemsArray[]>({
+  const { isPending, isError, data, error } = useQuery<ItemsArray[] | undefined>({
     queryKey: ['tasks'],
     queryFn: fetchTasks
   });
 
-  const { data: dataColumn } = useQuery<ColumnArray[]>({
+  const {
+    isPending: isPendingColumn,
+    isError: isErrorColumn,
+    data: dataColumn,
+    error: errorColumn
+  } = useQuery<ColumnArray[]>({
     queryKey: ['column'],
     queryFn: fetchColumn
   });
@@ -22,12 +27,12 @@ const Board = () => {
   const tasks = data || [];
   const columnArray = dataColumn || [];
 
-  if (isPending) {
+  if (isPending || isPendingColumn) {
     return <span>Loading...</span>;
   }
 
-  if (isError) {
-    return <span>Error: {error.message}</span>;
+  if (isError || isErrorColumn) {
+    return <span>Error: {error?.message || errorColumn?.message}</span>;
   }
 
   const returnItemsForColumn = (columnId: string, name: string) => {
@@ -40,6 +45,7 @@ const Board = () => {
           name={item.name}
           currentColumnId={item.column}
           currentColumnName={name}
+          columnArray={columnArray}
           index={index}
           data={tasks}
         />
@@ -51,7 +57,7 @@ const Board = () => {
       <DndProvider backend={HTML5Backend}>
         {columnArray.map(({ _id, name, bgColor }) => {
           return (
-            <Column key={_id} columnId={_id} title={name} bgColor={bgColor}>
+            <Column key={_id} columnId={_id} title={name} bgColor={bgColor} dataColumn={dataColumn}>
               {returnItemsForColumn(_id, name)}
             </Column>
           );
