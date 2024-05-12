@@ -8,6 +8,7 @@ export type ItemsArray = {
   id: string;
   name: string;
   column: string;
+  created_at: string;
 };
 
 export type ColumnArray = {
