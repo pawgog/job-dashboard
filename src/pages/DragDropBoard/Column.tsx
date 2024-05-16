@@ -7,6 +7,8 @@ import Modal from '../../component/Modal';
 import ButtonAction from '../../component/PopoverMenu';
 import ErrorMessage from '../../component/Error';
 import useCreateTask from '../../hooks/useCreateTask';
+import useUpdateColumn from '../../hooks/useUpdateColumn';
+import { ColumnArray } from '../../utils/types';
 import { staticText } from '../../global/staticText';
 import { colors } from '../../global/colors';
 import * as S from './DragDropBoard.styled';
@@ -16,13 +18,15 @@ type Props = {
   columnId: string;
   title: string;
   bgColor: string;
+  dataColumn: ColumnArray[];
 };
 
-const Column = ({ children, columnId, title, bgColor }: Props) => {
+const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [text, setText] = useState<string>(title);
   const [task, setTask] = useState<string>('');
   const [inputError, setInputError] = useState<string>('');
+  const { mutate: mutateUpdate } = useUpdateColumn();
   const { mutate } = useCreateTask();
 
   const addNewTask = (taskName: string) => {
@@ -32,7 +36,7 @@ const Column = ({ children, columnId, title, bgColor }: Props) => {
         setInputError('');
       }, 5000);
     } else {
-      const newTask = { id: uuidv4(), name: taskName, column: columnId };
+      const newTask = { id: uuidv4(), name: taskName, column: columnId, created_at: Date.now().toString() };
       mutate(newTask);
       setTask('');
     }
@@ -63,8 +67,11 @@ const Column = ({ children, columnId, title, bgColor }: Props) => {
     setIsOpen((prev) => (prev = !prev));
   };
 
-  const changeColumnText = (comparedValue: string, changedValue: string) => {
-    console.log('changeColumnText', comparedValue, changedValue);
+  const changeColumnText = (columnId: string, changedValue: string) => {
+    const newItems = dataColumn.map((column) =>
+      column._id === columnId ? { ...column, name: changedValue } : { ...column }
+    );
+    mutateUpdate({ columnId, newItems });
   };
 
   const deleteColumn = (id: string) => {
