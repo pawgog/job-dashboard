@@ -1,13 +1,17 @@
 import axios from "axios";
+import { createClient } from "@supabase/supabase-js";
 import { ItemsArray } from "../utils/types";
 
-// const localPath = "http://localhost:3000";
-const awsPath = "https://xv9gz13rca.execute-api.us-east-1.amazonaws.com";
+const supabaseDBPath = "https://ashudzqkulieyzaffcfp.supabase.co"
+const mongoDBPath = "https://job-tasks.onrender.com"
+// const awsPath = "https://xv9gz13rca.execute-api.us-east-1.amazonaws.com";
+
+const supabase = createClient(supabaseDBPath, `${import.meta.env.VITE_DB_ACCESS_KEY}`);
 
 export async function fetchTasks() {
   try {
-    const { data } = await axios.get(`${awsPath}/dev/tasks`);
-    return data?.result;
+    const { data } = await supabase.from('tasks').select()
+    return data as ItemsArray[];
   } catch (error) {
     console.error('An error occurred:', error);
   }
