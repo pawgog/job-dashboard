@@ -49,3 +49,20 @@ export async function deleteTask(id: string) {
     console.error('An error occurred:', error);
   }
 }
+
+export async function fetchColumn() {
+  try {
+    const { data } = await axios.get(`${mongoDBPath}/column`);
+    return data;
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
+export async function updateColumn({columnId, data}: any) {
+  try {
+    await axios.put(`${mongoDBPath}/column${columnId}`, { data: data });
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
