@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { fetchColumn, fetchTasks } from '../../services';
 import { ColumnArray, ItemsArray } from '../../utils/types';
+import Spinner from '../../component/Spinner';
 import Column from './Column';
 import MoveItem from './MoveItem';
 import * as S from './DragDropBoard.styled';
@@ -28,7 +29,7 @@ const Board = () => {
   const columnArray = dataColumn || [];
 
   if (isPending || isPendingColumn) {
-    return <span>Loading...</span>;
+    return <Spinner />;
   }
 
   if (isError || isErrorColumn) {
