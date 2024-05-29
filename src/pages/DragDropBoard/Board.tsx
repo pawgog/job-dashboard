@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { fetchColumn, fetchTasks } from '../../services';
 import { ColumnArray, ItemsArray } from '../../utils/types';
+import ErrorMessage from '../../component/Error';
 import Spinner from '../../component/Spinner';
 import Column from './Column';
 import MoveItem from './MoveItem';
@@ -33,7 +34,7 @@ const Board = () => {
   }
 
   if (isError || isErrorColumn) {
-    return <span>Error: {error?.message || errorColumn?.message}</span>;
+    return <ErrorMessage text={error?.message || errorColumn?.message || ''} />;
   }
 
   const returnItemsForColumn = (columnId: string, name: string) => {
