@@ -8,6 +8,7 @@ const useUpdateTask = () => {
     mutationFn: updateTask,
     onMutate: async (newItems: ItemsArray[]) => {
       const [item] = newItems;
+      const { id, name } = item;
 
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const previousTasks = queryClient.getQueryData(['tasks']);
@@ -15,7 +16,13 @@ const useUpdateTask = () => {
         previousState?.map((itemArray: ItemsArray) => (itemArray.id === item.id ? { ...item } : { ...itemArray }))
       );
 
-      return { previousTasks };
+      return {
+        data: {
+          previousTasks: previousTasks,
+          id: id,
+          name: name
+        }
+      };
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
