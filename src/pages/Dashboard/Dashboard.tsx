@@ -6,7 +6,6 @@ function Dashboard() {
   return (
     <S.Dashboard>
       <h2>{staticText.dashboardTitle}</h2>
-      <h3>{staticText.dashboardSubTitle}</h3>
       <Board />
     </S.Dashboard>
   );
