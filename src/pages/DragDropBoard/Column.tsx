@@ -68,10 +68,11 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
   };
 
   const changeColumnText = (columnId: string, changedValue: string) => {
-    const newItems = dataColumn.map((column) =>
-      column._id === columnId ? { ...column, name: changedValue } : { ...column }
-    );
-    mutateUpdate({ columnId, newItems });
+    const newColumn = dataColumn
+      .map((column) => (column._id === columnId ? { ...column, name: changedValue } : { ...column }))
+      .find((column) => column._id === columnId);
+
+    mutateUpdate({ columnId, newColumn });
   };
 
   const deleteColumn = (id: string) => {
@@ -97,8 +98,8 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
           title={`${staticText.updateColumn}`}
           label={`${staticText.columnName}`}
           buttonTitle={staticText.buttonTitle}
-          text={title}
-          changeItemText={() => changeColumnText(columnId, title)}
+          text={text}
+          changeItemText={() => changeColumnText(columnId, text)}
           setText={setText}
           handleDisplayModal={handleDisplayModal}
         />
