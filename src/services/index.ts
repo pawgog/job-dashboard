@@ -1,25 +1,12 @@
 import axios from "axios";
-import { createClient } from "@supabase/supabase-js";
 import { ItemsArray } from "../utils/types";
 
-const supabaseDBPath = "https://ashudzqkulieyzaffcfp.supabase.co"
 const mongoDBPath = "https://job-tasks.onrender.com"
-// const awsPath = "https://xv9gz13rca.execute-api.us-east-1.amazonaws.com";
-
-const supabase = createClient(supabaseDBPath, `${import.meta.env.VITE_DB_ACCESS_KEY}`);
 
 export async function fetchTasks() {
   try {
-    const { data } = await supabase.from('tasks').select()
-    return data as ItemsArray[];
-  } catch (error) {
-    console.error('An error occurred:', error);
-  }
-}
-
-export async function fetchTaskById(id: number) {
-  try {
-    await axios.get(`${awsPath}/dev/tasks/${id}`);
+    const { data } = await axios.get(`${mongoDBPath}/tasks`);
+    return data;
   } catch (error) {
     console.error('An error occurred:', error);
   }
@@ -27,16 +14,16 @@ export async function fetchTaskById(id: number) {
 
 export async function createTask(task: ItemsArray) {
   try {
-    await axios.post(`${awsPath}/dev/tasks`, { data: task });
+    await axios.post(`${mongoDBPath}/tasks`, task);
   } catch (error) {
     console.error('An error occurred:', error);
   }
 }
 
-export async function updateTask(items: ItemsArray[]) {
-  const [tasks] = items;
+export async function updateTask(itemArray: any) {
+  const { id } = itemArray
   try {
-    await axios.put(`${awsPath}/dev/tasks`, { data: tasks });
+    await axios.put(`${mongoDBPath}/tasks/${id}`, itemArray);
   } catch (error) {
     console.error('An error occurred:', error);
   }
@@ -44,7 +31,7 @@ export async function updateTask(items: ItemsArray[]) {
 
 export async function deleteTask(id: string) {
   try {
-    await axios.delete(`${awsPath}/dev/tasks/${id}`);
+    await axios.delete(`${mongoDBPath}/tasks/${id}`);
   } catch (error) {
     console.error('An error occurred:', error);
   }
@@ -59,9 +46,11 @@ export async function fetchColumn() {
   }
 }
 
-export async function updateColumn({columnId, data}: any) {
+export async function updateColumn(data: any) {
+  const {columnId, newColumn} = data;
+  
   try {
-    await axios.put(`${mongoDBPath}/column${columnId}`, { data: data });
+    await axios.put(`${mongoDBPath}/column/${columnId}`, newColumn);
   } catch (error) {
     console.error('An error occurred:', error);
   }
