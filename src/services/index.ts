@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ItemsArray } from "../utils/types";
+import { ItemsArray, ColumnArray } from "../utils/types";
 
 const mongoDBPath = "https://job-tasks.onrender.com"
 
@@ -46,11 +46,11 @@ export async function fetchColumn() {
   }
 }
 
-export async function updateColumn(data: any) {
-  const {columnId, newColumn} = data;
-  
+export async function updateColumn(column: ColumnArray) {
+  const { _id } = column;
+
   try {
-    await axios.put(`${mongoDBPath}/column/${columnId}`, newColumn);
+    await axios.put(`${mongoDBPath}/column/${_id}`, column);
   } catch (error) {
     console.error('An error occurred:', error);
   }

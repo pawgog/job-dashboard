@@ -14,5 +14,5 @@ export type ItemsArray = {
 export type ColumnArray = {
   _id: string;
   name: string;
-  bgColor: string;
+  bgColor?: string;
 };
