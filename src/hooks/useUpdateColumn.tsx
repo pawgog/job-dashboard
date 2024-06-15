@@ -3,29 +3,24 @@ import { updateColumn } from '../services';
 import { ColumnArray } from '../utils/types';
 
 type Props = {
-  columnId: string;
-  newColumn: ColumnArray | undefined;
+  _id: string;
+  name: string;
 };
 
 const useUpdateColumn = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: updateColumn,
-    onMutate: async ({ columnId, newColumn }: Props) => {
-      await queryClient.cancelQueries({ queryKey: ['column'] });
-      const previousColumn = queryClient.getQueryData(['column']);
+    onMutate: async ({ _id, name }: Props) => {
+      await queryClient.cancelQueries({ queryKey: ['column', _id] });
+      const previousColumn = queryClient.getQueryData(['todos', _id]);
       queryClient.setQueryData(['column'], (previousState: ColumnArray[]) =>
         previousState?.map((itemArray: ColumnArray) =>
-          itemArray._id === newColumn?._id ? { ...newColumn } : { ...itemArray }
+          itemArray._id === _id ? { ...itemArray, name } : { ...itemArray }
         )
       );
 
-      return {
-        data: {
-          newColumn: previousColumn,
-          id: columnId
-        }
-      };
+      return { previousColumn };
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['column'] });

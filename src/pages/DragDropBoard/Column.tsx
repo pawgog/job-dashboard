@@ -68,11 +68,11 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
   };
 
   const changeColumnText = (columnId: string, changedValue: string) => {
-    const newColumn = dataColumn
+    const column = dataColumn
       .map((column) => (column._id === columnId ? { ...column, name: changedValue } : { ...column }))
-      .find((column) => column._id === columnId);
+      .find((column) => column._id === columnId) || { _id: '', name: '' };
 
-    mutateUpdate({ columnId, newColumn });
+    mutateUpdate(column);
   };
 
   const deleteColumn = (id: string) => {
