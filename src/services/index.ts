@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TasksArray, ColumnArray } from "../utils/types";
+import { ColumnArray, TasksArray, NewTask } from "../utils/types";
 
 const mongoDBPath = "https://job-tasks.onrender.com"
 
@@ -12,7 +12,7 @@ export async function fetchTasks() {
   }
 }
 
-export async function createTask(task: TasksArray) {
+export async function createTask(task: NewTask) {
   try {
     await axios.post(`${mongoDBPath}/tasks`, task);
   } catch (error) {
@@ -20,10 +20,10 @@ export async function createTask(task: TasksArray) {
   }
 }
 
-export async function updateTask(itemArray: any) {
-  const { id } = itemArray
+export async function updateTask(task: TasksArray) {
+  const { _id } = task
   try {
-    await axios.put(`${mongoDBPath}/tasks/${id}`, itemArray);
+    await axios.put(`${mongoDBPath}/tasks/${_id}`, task);
   } catch (error) {
     console.error('An error occurred:', error);
   }
