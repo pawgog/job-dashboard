@@ -1,25 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateTask } from '../services';
-import { ItemsArray } from '../utils/types';
+import { TasksArray } from '../utils/types';
 
 const useUpdateTask = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: updateTask,
-    onMutate: async (newItems: ItemsArray[]) => {
+    onMutate: async (newItems: TasksArray[]) => {
       const [item] = newItems;
-      const { id, name } = item;
+      const { _id, name } = item;
 
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const previousTasks = queryClient.getQueryData(['tasks']);
-      queryClient.setQueryData(['tasks'], (previousState: ItemsArray[]) =>
-        previousState?.map((itemArray: ItemsArray) => (itemArray.id === item.id ? { ...item } : { ...itemArray }))
+      queryClient.setQueryData(['tasks'], (previousState: TasksArray[]) =>
+        previousState?.map((itemArray: TasksArray) => (itemArray._id === item._id ? { ...item } : { ...itemArray }))
       );
 
       return {
         data: {
           previousTasks: previousTasks,
-          id: id,
+          id: _id,
           name: name
         }
       };

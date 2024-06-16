@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ItemsArray, ColumnArray } from "../utils/types";
+import { TasksArray, ColumnArray } from "../utils/types";
 
 const mongoDBPath = "https://job-tasks.onrender.com"
 
@@ -12,7 +12,7 @@ export async function fetchTasks() {
   }
 }
 
-export async function createTask(task: ItemsArray) {
+export async function createTask(task: TasksArray) {
   try {
     await axios.post(`${mongoDBPath}/tasks`, task);
   } catch (error) {

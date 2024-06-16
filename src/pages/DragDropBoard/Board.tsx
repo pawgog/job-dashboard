@@ -3,7 +3,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchColumn, fetchTasks } from '../../services';
-import { ColumnArray, ItemsArray } from '../../utils/types';
+import { ColumnArray, TasksArray } from '../../utils/types';
 import ErrorMessage from '../../component/Error';
 import Spinner from '../../component/Spinner';
 import Column from './Column';
@@ -11,7 +11,7 @@ import MoveItem from './MoveItem';
 import * as S from './DragDropBoard.styled';
 
 const Board = () => {
-  const { isPending, isError, data, error } = useQuery<ItemsArray[] | undefined>({
+  const { isPending, isError, data, error } = useQuery<TasksArray[] | undefined>({
     queryKey: ['tasks'],
     queryFn: fetchTasks
   });
@@ -42,8 +42,8 @@ const Board = () => {
       .filter((item) => item.column === columnId)
       .map((item, index) => (
         <MoveItem
-          key={item.id}
-          id={item.id}
+          key={item._id}
+          id={item._id}
           name={item.name}
           currentColumnId={item.column}
           currentColumnName={name}

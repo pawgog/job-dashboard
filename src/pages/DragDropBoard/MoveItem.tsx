@@ -6,7 +6,7 @@ import useDragDrop from '../../hooks/useDragDrop';
 import useUpdateTask from '../../hooks/useUpdateTask';
 import useDeleteTask from '../../hooks/useDeleteTask';
 import { changeItemAction } from '../../utils/helper';
-import { ColumnArray, ItemsArray } from '../../utils/types';
+import { ColumnArray, TasksArray } from '../../utils/types';
 import { staticText } from '../../global/staticText';
 import * as S from './DragDropBoard.styled';
 
@@ -17,7 +17,7 @@ type Props = {
   currentColumnId: string;
   currentColumnName: string;
   columnArray: ColumnArray[];
-  data: ItemsArray[];
+  data: TasksArray[];
 };
 
 const MoveItem = ({ id, name, index, currentColumnId, currentColumnName, columnArray, data }: Props) => {

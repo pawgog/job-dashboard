@@ -4,15 +4,18 @@ export type ItemProps = {
   currentColumnId: string;
 };
 
-export type ItemsArray = {
-  id: string;
+export type NewTask = {
   name: string;
   column: string;
   created_at: string;
 };
 
+export interface TasksArray extends NewTask {
+  _id: string;
+};
+
 export type ColumnArray = {
   _id: string;
   name: string;
-  bgColor?: string;
+  bgColor: string;
 };

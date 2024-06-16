@@ -36,7 +36,7 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
         setInputError('');
       }, 5000);
     } else {
-      const newTask = { id: uuidv4(), name: taskName, column: columnId, created_at: Date.now().toString() };
+      const newTask = { _id: uuidv4(), name: taskName, column: columnId, created_at: Date.now().toString() };
       mutate(newTask);
       setTask('');
     }
@@ -70,7 +70,7 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
   const changeColumnText = (columnId: string, changedValue: string) => {
     const column = dataColumn
       .map((column) => (column._id === columnId ? { ...column, name: changedValue } : { ...column }))
-      .find((column) => column._id === columnId) || { _id: '', name: '' };
+      .find((column) => column._id === columnId) || { _id: '', name: '', bgColor: '' };
 
     mutateUpdate(column);
   };
