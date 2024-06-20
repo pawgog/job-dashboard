@@ -1,7 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { useDrop, DropTargetMonitor } from 'react-dnd';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { v4 as uuidv4 } from 'uuid';
 
 import Modal from '../../component/Modal';
 import ButtonAction from '../../component/PopoverMenu';
@@ -36,7 +35,7 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
         setInputError('');
       }, 5000);
     } else {
-      const newTask = { _id: uuidv4(), name: taskName, column: columnId, created_at: Date.now().toString() };
+      const newTask = { name: taskName, column: columnId, created_at: Date.now().toString() };
       mutate(newTask);
       setTask('');
     }

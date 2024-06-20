@@ -5,7 +5,6 @@ import Modal from '../../component/Modal';
 import useDragDrop from '../../hooks/useDragDrop';
 import useUpdateTask from '../../hooks/useUpdateTask';
 import useDeleteTask from '../../hooks/useDeleteTask';
-import { changeItemAction } from '../../utils/helper';
 import { ColumnArray, TasksArray } from '../../utils/types';
 import { staticText } from '../../global/staticText';
 import * as S from './DragDropBoard.styled';
@@ -30,18 +29,18 @@ const MoveItem = ({ id, name, index, currentColumnId, currentColumnName, columnA
     setIsOpen((prev) => (prev = !prev));
   };
 
-  const changeItemColumn = (comparedValue: string, changedValue: string) => {
-    const prop = 'name';
-    const value = 'column';
-    const { newItems } = changeItemAction({ data, prop, value, comparedValue, changedValue });
-    mutateUpdate(newItems);
+  const changeItemColumn = (columnId: string, taskName: string) => {
+    const tasks = data
+      .map((task) => (task.name === taskName ? { ...task, column: columnId } : { ...task }))
+      .find((task) => task.name === taskName) || { _id: '', name: '', column: '', created_at: '' };
+    mutateUpdate(tasks);
   };
 
-  const changeItemText = (comparedValue: string, changedValue: string) => {
-    const prop = 'id';
-    const value = 'name';
-    const { newItems } = changeItemAction({ data, prop, value, comparedValue, changedValue });
-    mutateUpdate(newItems);
+  const changeItemText = (taskId: string, changedValue: string) => {
+    const tasks = data
+      .map((task) => (task._id === taskId ? { ...task, name: changedValue } : { ...task }))
+      .find((task) => task._id === taskId) || { _id: '', name: '', column: '', created_at: '' };
+    mutateUpdate(tasks);
   };
 
   const { ref, opacity } = useDragDrop({ index, currentColumnId, name, columnArray, changeItemColumn });
