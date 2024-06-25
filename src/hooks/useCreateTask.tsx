@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createTask } from '../services';
-import { TasksArray } from '../utils/types';
+import { NewTask, TasksArray } from '../utils/types';
 
 const useCreateTask = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: createTask,
-    onMutate: async (newTask: TasksArray) => {
+    onMutate: async (newTask: NewTask) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       queryClient.setQueryData(['tasks'], (items: TasksArray[]) => [...items, newTask]);
     },
