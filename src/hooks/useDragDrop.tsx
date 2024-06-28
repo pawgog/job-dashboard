@@ -52,7 +52,7 @@ const useDragDrop = ({ index, currentColumnId, name, columnArray, changeItemColu
       if (dropResult) {
         columnArray.find(({ _id, name }) => {
           if (dropResult.name === name) {
-            changeItemColumn(item.name, _id);
+            changeItemColumn(_id, item.name);
           }
         });
       }
