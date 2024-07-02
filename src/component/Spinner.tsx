@@ -17,6 +17,7 @@ const Spinner = styled.div`
   border-right: 2px solid ${colors.grey};
   border-bottom: 2px solid ${colors.grey};
   border-left: 4px solid ${colors.black};
+  margin: 0 auto;
   background: transparent;
   width: 42px;
   height: 42px;
