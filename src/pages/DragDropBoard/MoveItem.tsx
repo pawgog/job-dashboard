@@ -5,6 +5,7 @@ import Modal from '../../component/Modal';
 import useDragDrop from '../../hooks/useDragDrop';
 import useUpdateTask from '../../hooks/useUpdateTask';
 import useDeleteTask from '../../hooks/useDeleteTask';
+import { updateItemsArray } from '../../utils/helper';
 import { ColumnArray, TasksArray } from '../../utils/types';
 import { staticText } from '../../global/staticText';
 import * as S from './DragDropBoard.styled';
@@ -30,16 +31,12 @@ const MoveItem = ({ id, name, index, currentColumnId, currentColumnName, columnA
   };
 
   const changeItemColumn = (columnId: string, taskName: string) => {
-    const tasks = data
-      .map((task) => (task.name === taskName ? { ...task, column: columnId } : { ...task }))
-      .find((task) => task.name === taskName) || { _id: '', name: '', column: '', created_at: '' };
+    const tasks = updateItemsArray(data, taskName, columnId, 'name', 'column');
     mutateUpdate(tasks);
   };
 
   const changeItemText = (taskId: string, changedValue: string) => {
-    const tasks = data
-      .map((task) => (task._id === taskId ? { ...task, name: changedValue } : { ...task }))
-      .find((task) => task._id === taskId) || { _id: '', name: '', column: '', created_at: '' };
+    const tasks = updateItemsArray(data, taskId, changedValue, '_id', 'name');
     mutateUpdate(tasks);
   };
 
