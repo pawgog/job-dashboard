@@ -3,7 +3,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import * as S from './Modal.styled';
 
 type Prop = {
-  id: string;
+  id?: string;
   title: string;
   label: string;
   buttonTitle: string;
@@ -13,7 +13,7 @@ type Prop = {
   setText: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Modal = ({ id, title, label, buttonTitle, text, changeItemText, handleDisplayModal, setText }: Prop) => {
+const Modal = ({ id = '', title, label, buttonTitle, text, changeItemText, handleDisplayModal, setText }: Prop) => {
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
   };
