@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { colors } from '../../global/colors';
 
 export const Board = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -90,7 +91,7 @@ export const Button = styled.button`
   }
 `;
 
-const ButtomActionStyled = css`
+const ButtonActionStyled = css`
   position: absolute;
   display: flex;
   justify-content: center;
@@ -114,11 +115,36 @@ const ButtomActionStyled = css`
 `;
 
 export const ButtonDelete = styled.button`
-  ${ButtomActionStyled}
+  ${ButtonActionStyled}
   right: -0.2rem;
 `;
 
 export const ButtonEdit = styled.button`
-  ${ButtomActionStyled}
+  ${ButtonActionStyled}
   right: 1.3rem;
+`;
+
+export const ButtonAddColumn = styled.button`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: max-content;
+  min-height: 100px;
+  width: 220px;
+  margin: 1rem;
+  border-radius: 1rem;
+  background-color: none;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+
+  &:hover {
+    color: ${colors.violet};
+  }
+
+  & svg {
+    font-size: 1.5rem;
+  }
+  
 `;
