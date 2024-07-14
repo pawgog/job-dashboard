@@ -1,16 +1,23 @@
+import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchColumn, fetchTasks } from '../../services';
-import { ColumnArray, TasksArray } from '../../utils/types';
-import ErrorMessage from '../../component/Error';
-import Spinner from '../../component/Spinner';
 import Column from './Column';
 import MoveItem from './MoveItem';
+import Modal from '../../component/Modal';
+import ErrorMessage from '../../component/Error';
+import Spinner from '../../component/Spinner';
+import useCreateColumn from '../../hooks/useCreateColumn';
+import { fetchColumn, fetchTasks } from '../../services';
+import { ColumnArray, TasksArray } from '../../utils/types';
+import { staticText } from '../../global/staticText';
 import * as S from './DragDropBoard.styled';
 
 const Board = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [text, setText] = useState<string>('');
   const { isPending, isError, data, error } = useQuery<TasksArray[] | undefined>({
     queryKey: ['tasks'],
     queryFn: fetchTasks
@@ -25,6 +32,16 @@ const Board = () => {
     queryKey: ['column'],
     queryFn: fetchColumn
   });
+  const { mutate } = useCreateColumn();
+
+  const addNewColumn = (name: string, color: string) => {
+    const newColumn = { name, bgColor: color };
+    mutate(newColumn);
+  };
+
+  const handleDisplayModal = () => {
+    setIsOpen((prev) => (prev = !prev));
+  };
 
   const tasks = data || [];
   const columnArray = dataColumn || [];
@@ -65,6 +82,22 @@ const Board = () => {
           );
         })}
       </DndProvider>
+      {isOpen && (
+        <Modal
+          title={`${staticText.updateColumn}`}
+          label={`${staticText.columnName}`}
+          buttonTitle={staticText.buttonTitle}
+          text={text}
+          changeItemText={() => addNewColumn(text, 'green')}
+          setText={setText}
+          handleDisplayModal={handleDisplayModal}
+        />
+      )}
+      {columnArray.length <= 4 && (
+        <S.ButtonAddColumn onClick={handleDisplayModal}>
+          <AiOutlinePlusCircle />
+        </S.ButtonAddColumn>
+      )}
     </S.Board>
   );
 };
