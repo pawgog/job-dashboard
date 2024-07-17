@@ -7,6 +7,7 @@ import ButtonAction from '../../component/PopoverMenu';
 import ErrorMessage from '../../component/Error';
 import useCreateTask from '../../hooks/useCreateTask';
 import useUpdateColumn from '../../hooks/useUpdateColumn';
+import useDeleteColumn from '../../hooks/useDeleteColumn';
 import { ColumnArray } from '../../utils/types';
 import { staticText } from '../../global/staticText';
 import { colors } from '../../global/colors';
@@ -27,6 +28,7 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
   const [inputError, setInputError] = useState<string>('');
   const { mutate: mutateUpdate } = useUpdateColumn();
   const { mutate } = useCreateTask();
+  const { mutate: mutateDelete } = useDeleteColumn();
 
   const addNewTask = (taskName: string) => {
     if (!taskName) {
@@ -75,7 +77,9 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
   };
 
   const deleteColumn = (id: string) => {
-    console.log('delete column', id);
+    if (confirm(`${staticText.deleteConfirm}`)) {
+      mutateDelete(id);
+    }
   };
 
   return (
