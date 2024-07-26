@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteTask } from '../services';
-import { ItemsArray } from '../utils/types';
+import { TasksArray } from '../utils/types';
 
 const useDeleteTask = () => {
   const queryClient = useQueryClient();
@@ -9,8 +9,8 @@ const useDeleteTask = () => {
     onMutate: async (id: string) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const previousTasks = queryClient.getQueryData(['tasks']);
-      queryClient.setQueryData(['tasks'], (previousState: ItemsArray[]) =>
-        previousState?.filter((itemArray: ItemsArray) => itemArray.id !== id)
+      queryClient.setQueryData(['tasks'], (previousState: TasksArray[]) =>
+        previousState?.filter((itemArray: TasksArray) => itemArray._id !== id)
       );
 
       return { previousTasks };
