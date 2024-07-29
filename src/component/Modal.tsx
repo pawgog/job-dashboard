@@ -8,14 +8,33 @@ type Prop = {
   label: string;
   buttonTitle: string;
   text: string;
+  color?: string;
+  isColumn?: boolean;
   changeItemText: (comparedValue: string, changedValue: string) => void;
   handleDisplayModal: () => void;
   setText: React.Dispatch<React.SetStateAction<string>>;
+  setColor?: React.Dispatch<React.SetStateAction<string>> | undefined;
 };
 
-const Modal = ({ id = '', title, label, buttonTitle, text, changeItemText, handleDisplayModal, setText }: Prop) => {
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+const Modal = ({
+  id = '',
+  title,
+  label,
+  buttonTitle,
+  text,
+  color,
+  isColumn,
+  changeItemText,
+  handleDisplayModal,
+  setText,
+  setColor
+}: Prop) => {
+  const handleTextInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
+  };
+
+  const handleColorInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setColor && setColor(event.target.value);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,11 +53,17 @@ const Modal = ({ id = '', title, label, buttonTitle, text, changeItemText, handl
         <S.ModalBodyContainer>
           <form onSubmit={onSubmit}>
             <div className="form-input">
-              <input value={text} onChange={handleInput} required />
+              <input value={text} onChange={handleTextInput} required />
               <label>
                 <span>{label}</span>
               </label>
             </div>
+            {isColumn && (
+              <div className="form-color-picker">
+                <input type="color" id="column" name="column" value={color} onChange={handleColorInput} />
+                <label htmlFor="column">column background</label>
+              </div>
+            )}
             <button type="submit">{buttonTitle}</button>
           </form>
         </S.ModalBodyContainer>
