@@ -103,6 +103,11 @@ export const ModalBodyContainer = styled.div`
         transition: all 0.3s ease;
       }      
     }
+
+    .form-color-picker {
+      margin: 1rem 0;
+    }
+
     button {
       outline: 0;
       border: 0;
