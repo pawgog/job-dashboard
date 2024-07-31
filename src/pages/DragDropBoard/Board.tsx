@@ -17,7 +17,8 @@ import * as S from './DragDropBoard.styled';
 
 const Board = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [text, setText] = useState<string>('');
+  const [columnTitle, setColumnTitle] = useState<string>('');
+  const [color, setColor] = useState('#e66465');
   const { isPending, isError, data, error } = useQuery<TasksArray[] | undefined>({
     queryKey: ['tasks'],
     queryFn: fetchTasks
@@ -37,6 +38,7 @@ const Board = () => {
   const addNewColumn = (name: string, color: string) => {
     const newColumn = { name, bgColor: color };
     mutate(newColumn);
+    setColumnTitle('');
   };
 
   const handleDisplayModal = () => {
@@ -85,12 +87,15 @@ const Board = () => {
       {isOpen && (
         <Modal
           title={`${staticText.updateColumn}`}
-          label={`${staticText.columnName}`}
-          buttonTitle={staticText.buttonTitle}
-          text={text}
-          changeItemText={() => addNewColumn(text, 'green')}
-          setText={setText}
+          label={`${staticText.nameColumn}`}
+          buttonTitle={staticText.addColumn}
+          text={columnTitle}
+          color={color}
+          changeItemText={() => addNewColumn(columnTitle, color)}
+          setText={setColumnTitle}
+          setColor={setColor}
           handleDisplayModal={handleDisplayModal}
+          isColumn
         />
       )}
       {columnArray.length <= 4 && (
