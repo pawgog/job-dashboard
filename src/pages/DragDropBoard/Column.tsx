@@ -21,6 +21,12 @@ type Props = {
   dataColumn: ColumnArray[];
 };
 
+const columnObject = {
+  _id: '',
+  name: '',
+  bgColor: ''
+};
+
 const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [text, setText] = useState<string>(title);
@@ -69,9 +75,10 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
   };
 
   const changeColumnText = (columnId: string, changedValue: string) => {
-    const column = dataColumn
-      .map((column) => (column._id === columnId ? { ...column, name: changedValue } : { ...column }))
-      .find((column) => column._id === columnId) || { _id: '', name: '', bgColor: '' };
+    const column =
+      dataColumn
+        .map((column) => (column._id === columnId ? { ...column, name: changedValue } : { ...column }))
+        .find((column) => column._id === columnId) || columnObject;
 
     mutateUpdate(column);
   };
@@ -99,7 +106,7 @@ const Column = ({ children, columnId, title, bgColor, dataColumn }: Props) => {
         <Modal
           id={columnId}
           title={`${staticText.updateColumn}`}
-          label={`${staticText.columnName}`}
+          label={`${staticText.nameColumn}`}
           buttonTitle={staticText.buttonTitle}
           text={text}
           changeItemText={() => changeColumnText(columnId, text)}
